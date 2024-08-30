@@ -16,7 +16,7 @@ class NotaListOperations {
     }
     
     public double notaAcumulada() {
-        Node<nota> current = listaDeNotas.topFrontNode();
+        SinglyLinkedList.Node<nota> current = listaDeNotas.topFrontNode();
 
         if (current == null) {
             System.out.println("List is empty");
@@ -33,7 +33,7 @@ class NotaListOperations {
     }
 
     public double sumaPorcentajes() {
-        Node<nota> current = listaDeNotas.topFrontNode();
+        SinglyLinkedList.Node<nota> current = listaDeNotas.topFrontNode();
         double sumaPorcentajes = 0;
 
         while (current != null) {

@@ -1,87 +1,92 @@
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-    class Node<T> {
-        T key;
-        Node<T> next;
+public class SinglyLinkedList<T> implements Iterable<T> {
 
-        public Node(T key) {
-            this.key = key;
-            this.next = null;
+    public static class Node<T> {
+        T key; // Key
+        Node<T> next; // Pointer to the next node
+
+        public Node(T key) { // Constructor
+            this.key = key; // Initialize the data
+            this.next = null; // Initialize the next pointer to null
         }
     }
-class SinglyLinkedList<T> {
+
+    Node<T> head = null; // Head node
+    Node<T> tail = null; // Tail node
 
 
+    // Push Front -> O(1)
+    public void pushFront(T key) { // Insert a new node at the front
+        Node<T> newNode = new Node<>(key); // Create a new node and set its data
 
-    Node<T> head = null;
-    Node<T> tail = null;
-
-    public void pushFront(T key) {
-        Node<T> newNode = new Node<>(key);
-
-        if (head == null) {
-            head = newNode;
-            tail = newNode;
+        if (head == null) { // Checks if the list is empty
+            head = newNode; // New node becomes the head
+            tail = newNode; // New node becomes the tail
         } else {
-            newNode.next = head;
-            head = newNode;
+            newNode.next = head; // New node points to old head
+            head = newNode; // New node becomes the actual head
         }
     }
 
-    public T topFront() {
+    // Top Front -> O(1)
+    public T topFront() { // Returns the data of the front node
         if (head == null) {
             throw new IllegalStateException("List is empty");
         }
         return head.key;
     }
     
-    public Node<T> topFrontNode() {
+    // Top Front Node -> O(1)
+    public Node<T> topFrontNode() { //Returns the front node
             if (head == null) {
             throw new IllegalStateException("List is empty");
         }
         return head;
     }
-    
-    public void popFront() {
-        if (head == null) {
+
+    // Pop Front -> O(1)
+    public void popFront() { // Removes the front node
+        if (head == null) { // Checks if the list is empty
             throw new IllegalStateException("List is empty");
         }
 
-        head = head.next;
+        head = head.next; // Head points to the head next node
 
-        if (head == null) {
+        if (head == null) { // Checks if the list is empty after removing the front node
             tail = null;
         }
     }
-    
-    public void popAll() {
-        head = null;
-    }
 
-    public void pushBack(T key) {
-        Node<T> newNode = new Node<>(key);
+    // Push Back -> O(1)
+    public void pushBack(T key) { // Inserts a new node at the end
+        Node<T> newNode = new Node<>(key); // Create a new node and set its data
 
-        if (head == null) {
-            head = newNode;
-            tail = newNode;
+        if (head == null) { // Checks if the list is empty
+            head = newNode; // New node becomes the head
+            tail = newNode; // New node becomes the tail
         } else {
-            tail.next = newNode;
-            tail = newNode;
+            tail.next = newNode; // Old tail next's points to new node
+            tail = newNode; // New node becomes the tail
         }
     }
 
-    public T topBack() {
+    // Top Back -> O(1)
+    public T topBack() { // Returns the data of the tail node
         if (tail == null) {
             throw new IllegalStateException("List is empty");
         }
         return tail.key;
     }
 
-    public void popBack() {
-        if (head == null) {
+    // Pop Back -> O(n)
+    public void popBack() { // Removes the back node
+        if (head == null) { // Checks if the list is empty
             throw new IllegalStateException("List is empty");
         }
 
-        if (head == tail) {
+        if (head == tail) { // Checks if there is only one node
             head = null;
             tail = null;
             return;
@@ -90,19 +95,20 @@ class SinglyLinkedList<T> {
         Node<T> current = head;
         Node<T> previous = null;
 
-        while (current.next != null) {
+        while (current.next != null) { // Traverse the list
             previous = current;
             current = current.next;
         }
 
-        previous.next = null;
-        tail = previous;
+        previous.next = null; // Tail node points to null
+        tail = previous; // Previous node becomes the tail
     }
 
-    public boolean find(T key) {
-        Node<T> current = head;
+    // Find -> O(n)
+    public boolean find(T key) { // Is the key in the list?
+        Node<T> current = head; // Start from the head
 
-        while (current != null) {
+        while (current != null) { // Traverse the list
             if (current.key.equals(key)) {
                 return true;
             }
@@ -111,56 +117,50 @@ class SinglyLinkedList<T> {
         return false;
     }
 
-    public boolean findByName(String nombre) {
-        Node<T> current = head;
-
-        while (current != null) {
-            if (current.key instanceof nota) {
-                nota currentNota = (nota) current.key;
-
-                if (currentNota.getNombre().equals(nombre)) {
-                    return true;
-                }
-            }
-            current = current.next;
-        }
-        return false;
-    }
-
-    public void erase(T key) {
-        if (head == null) {
+    // Erase -> O(n)
+    public void erase(T key) { // Removes a node with a specific data from the list
+        if (head == null) { // Checks if the list is empty
             throw new IllegalStateException("List is empty");
         }
 
-        if (head.key.equals(key)) {
-            head = head.next;
+        if (head.key.equals(key)) { // Checks if the head node has the data
+            head = head.next; // Actual head points to the old head next's node
             return;
         }
 
-        Node<T> current = head;
-        Node<T> previous = null;
+        Node<T> current = head; // Start from the head
+        Node<T> previous = null; // Previous node to the current node
 
-        while (current != null) {
+        while (current != null) { // Traverse the list
             if (current.key.equals(key)) {
-                previous.next = current.next;
+                previous.next = current.next; // Previous node points to the current next node
                 return;
             }
-            previous = current;
-            current = current.next;
+            previous = current; // Previous node becomes the current node
+            current = current.next; // Current node becomes the current next node
         }
     }
 
-    public boolean isEmpty() {
+    // Empty -> 0(1)
+    public boolean isEmpty() { // Is it empty?
         return head == null;
     }
+    
+    // Clear -> O(1)
+    public void clear() { //Clears the list
+        head = null; 
+        tail = null; 
+    }
 
-    public void addBefore(T key, T newKey) {
-        if (head == null) {
+    // Add Before -> O(n)
+    public void addBefore(T key, T newKey) { // Inserts a new node before a node with a specific key, if the key is
+        // duplicated, it inserts the new node before the first occurrence
+        if (head == null) { // Checks if the list is empty
             throw new IllegalStateException("List is empty");
         }
 
-        if (head.key.equals(key)) {
-            Node<T> newNode = new Node<>(newKey);
+        if (head.key.equals(key)) { // Checks if the head node has the key
+            Node<T> newNode = new Node<>(newKey); // Create a new node
             newNode.next = head;
             head = newNode;
             return;
@@ -169,9 +169,9 @@ class SinglyLinkedList<T> {
         Node<T> current = head;
         Node<T> previous = null;
 
-        while (current != null) {
+        while (current != null) { // Traverse the list
             if (current.key.equals(key)) {
-                Node<T> newNode = new Node<>(newKey);
+                Node<T> newNode = new Node<>(newKey); // Create a new node
                 previous.next = newNode;
                 newNode.next = current;
                 return;
@@ -183,16 +183,18 @@ class SinglyLinkedList<T> {
         throw new IllegalArgumentException("Key not found in the list");
     }
 
-    public void addAfter(T key, T newKey) {
-        if (head == null) {
+    // Add After -> O(n)
+    public void addAfter(T key, T newKey) { // Inserts a new node after a node with a specific key, if the key is
+        // duplicated, it inserts the new node after the first occurrence
+        if (head == null) { // Checks if the list is empty
             throw new IllegalStateException("List is empty");
         }
 
         Node<T> current = head;
 
-        while (current != null) {
+        while (current != null) { // Traverse the list
             if (current.key.equals(key)) {
-                Node<T> newNode = new Node<>(newKey);
+                Node<T> newNode = new Node<>(newKey); // Create a new node
                 newNode.next = current.next;
                 current.next = newNode;
                 return;
@@ -203,7 +205,7 @@ class SinglyLinkedList<T> {
         throw new IllegalArgumentException("Key not found in the list");
     }
 
-    public void display() {
+    public void display() { // Display the list
         Node<T> current = head;
 
         if (current == null) {
@@ -212,7 +214,7 @@ class SinglyLinkedList<T> {
         }
 
         System.out.print("Nodes of singly linked list: ");
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb=new StringBuilder();
         sb.append("[");
         while (current.next != null) {
             sb.append(current.key + ", ");
@@ -224,26 +226,28 @@ class SinglyLinkedList<T> {
         System.out.println(sb);
     }
 
-    public String displayT() {
-        Node<T> current = head;
-        String lista = "";
-
-        if (current == null) {
-            lista = "List is empty";
-            return lista;
-        }
-
-        //System.out.print("[");
-        while (current.next != null) {
-            lista += current.key.toString() + "\n";
-            //System.out.print(current.key.toString() + ", \n");
-            current = current.next;
-        }
-        lista += current.key.toString() + "\n";
-        return lista;
-        
-        //System.out.println(current.key.toString() + "]");
+    public Iterator<T> iterator(){
+        return new linkedListIterator();
     }
 
-    
+    private class linkedListIterator implements Iterator<T>{
+        private Node<T> current=head;
+
+        @Override
+        public boolean hasNext() {
+            return current!=null;
+        }
+
+        public T next(){
+            if(!hasNext()){
+                throw new NoSuchElementException();
+            }
+            T dataNode=current.key;
+            current=current.next;
+            return dataNode;
+        }
+    }
+
 }
+
+

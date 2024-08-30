@@ -13,7 +13,6 @@ public class PanelNotas extends javax.swing.JPanel {
     
     public PanelNotas() {
         initComponents();
-        configurarModeloTabla(); // Asegúrate de llamar a este método
         configurarTablaNotas();
         colaDeNotas = new SinglyLinkedList<>();
         colaDeNotasOp = new NotaListOperations(colaDeNotas);        
@@ -197,14 +196,30 @@ public class PanelNotas extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void configurarModeloTabla() {
-    NonEditableTableModel modeloTabla = new NonEditableTableModel(
-        new Object[] {"%", "Nombre", "Nota"}, // Nombres de las columnas
-        0 // Número inicial de filas
-    );
     
-    tablaDeNotas.setModel(modeloTabla);
-}
+    
+    private void configurarTablaNotas() {
+        // Crear y establecer el modelo de la tabla
+        NonEditableTableModel modeloTabla = new NonEditableTableModel(
+            new Object[] {"%", "Nombre", "Nota"}, // Nombres de las columnas
+            0 // Número inicial de filas
+        );
+        tablaDeNotas.setModel(modeloTabla);
+
+        // Configurar las características visuales de la tabla
+        tablaDeNotas.setFont(new Font("SansSerif", Font.PLAIN, 14)); // Fuente Serif, tamaño 14, estilo normal
+
+        // Establecer el ancho de las columnas
+        TableColumn columnaPorcentaje = tablaDeNotas.getColumnModel().getColumn(0);
+        columnaPorcentaje.setPreferredWidth(50);
+
+        TableColumn columnaNombre = tablaDeNotas.getColumnModel().getColumn(1);
+        columnaNombre.setPreferredWidth(400);
+
+        TableColumn columnaValor = tablaDeNotas.getColumnModel().getColumn(2);
+        columnaValor.setPreferredWidth(50);
+    }
+
 
     
     private void BotonAgregarNotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonAgregarNotaActionPerformed
@@ -218,7 +233,8 @@ public class PanelNotas extends javax.swing.JPanel {
             notaPrueba = new nota(Double.parseDouble(valor), nombre, Double.parseDouble(porcentaje));
             colaDeNotas.pushBack(notaPrueba);
 
-            Node<nota> current = colaDeNotas.topFrontNode();
+            SinglyLinkedList.Node<nota> current = colaDeNotas.topFrontNode();
+
                 modeloTabla.setRowCount(0);
 
              while (current != null) {
@@ -242,7 +258,7 @@ public class PanelNotas extends javax.swing.JPanel {
     }//GEN-LAST:event_jTextFieldPorcentajeActionPerformed
 
     private void BotonLimpiarTablaNotasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonLimpiarTablaNotasActionPerformed
-        colaDeNotas.popAll();
+        colaDeNotas.clear();
         NonEditableTableModel modeloTabla = (NonEditableTableModel)tablaDeNotas.getModel();
         modeloTabla.setRowCount(0);
         jTextFieldNombre.setText("");
@@ -255,19 +271,6 @@ public class PanelNotas extends javax.swing.JPanel {
 
     }//GEN-LAST:event_BotonLimpiarTablaNotasActionPerformed
 
-    private void configurarTablaNotas() {
-        tablaDeNotas.setFont(new Font("SansSerif", Font.PLAIN, 14)); // Fuente Serif, tamaño 14, estilo normal
-        TableColumn columnaPorcentaje = tablaDeNotas.getColumnModel().getColumn(0);
-        columnaPorcentaje.setPreferredWidth(50);
-
-        // Establecer el ancho de la segunda columna (Nombre) a 100 píxeles
-        TableColumn columnaNombre = tablaDeNotas.getColumnModel().getColumn(1);
-        columnaNombre.setPreferredWidth(400);
-
-        // Establecer el ancho de la tercera columna (Apellido) a 150 píxeles
-        TableColumn columnaValor = tablaDeNotas.getColumnModel().getColumn(2);
-        columnaValor.setPreferredWidth(50);
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BotonAgregarNota;
     private javax.swing.JButton BotonLimpiarTablaNotas;

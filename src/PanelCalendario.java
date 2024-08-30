@@ -7,6 +7,7 @@
  *
  * @author Acer
  */
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 public class PanelCalendario extends javax.swing.JPanel {
  
@@ -15,59 +16,45 @@ public class PanelCalendario extends javax.swing.JPanel {
      */
     public PanelCalendario() {
         initComponents();
-                configurarTabla();
+        configurarTablaCalendario();
     }
 
     
-    private void configurarTabla() {
-        calendarioMes.setFont(new Font("SansSerif", Font.PLAIN, 14)); // Fuente Serif, tamaño 14, estilo normal
-        calendarioMes.setRowHeight(0, 20); // Establece la altura de la primera fila a 40 píxeles
-        calendarioMes.setRowHeight(1, 60); // Establece la altura de la primera fila a 40 píxeles
-        calendarioMes.setRowHeight(2, 20); // Establece la altura de la primera fila a 40 píxeles
-        calendarioMes.setRowHeight(3, 60); // Establece la altura de la primera fila a 40 píxeles
-        calendarioMes.setRowHeight(4, 20); // Establece la altura de la primera fila a 40 píxeles
-        calendarioMes.setRowHeight(5, 60); // Establece la altura de la primera fila a 40 píxeles
-        calendarioMes.setRowHeight(6, 20); // Establece la altura de la primera fila a 40 píxeles
-        calendarioMes.setRowHeight(7, 60); // Establece la altura de la primera fila a 40 píxeles
-        calendarioMes.setRowHeight(8, 20); // Establece la altura de la primera fila a 40 píxeles
-        calendarioMes.setRowHeight(9, 60); // Establece la altura de la primera fila a 40 píxeles
-        calendarioMes.setRowHeight(10, 20); // Establece la altura de la primera fila a 40 píxeles
-        calendarioMes.setRowHeight(11, 60); // Establece la altura de la primera fila a 40 píxeles
-        calendarioMes.setValueAt(1, 0, 0); // Fila 0, Columna 0
-        calendarioMes.setValueAt(2, 0, 1); // Fila 0, Columna 0
-        calendarioMes.setValueAt(3, 0, 2); // Fila 0, Columna 0
-        calendarioMes.setValueAt(4, 0, 3); // Fila 0, Columna 0
-        calendarioMes.setValueAt(5, 0, 4); // Fila 0, Columna 0
-        calendarioMes.setValueAt(6, 0, 5); // Fila 0, Columna 0
-        calendarioMes.setValueAt(7, 0, 6); // Fila 0, Columna 0
-        calendarioMes.setValueAt(8, 2, 0); // Fila 0, Columna 0
-        calendarioMes.setValueAt(9, 2, 1); // Fila 0, Columna 0
-        calendarioMes.setValueAt(10, 2, 2); // Fila 0, Columna 0
-        calendarioMes.setValueAt(11, 2, 3); // Fila 0, Columna 0
-        calendarioMes.setValueAt(12, 2, 4); // Fila 0, Columna 0
-        calendarioMes.setValueAt(13, 2, 5); // Fila 0, Columna 0
-        calendarioMes.setValueAt(14, 2, 6); // Fila 0, Columna 0
-        calendarioMes.setValueAt(15, 4, 0); // Fila 0, Columna 0
-        calendarioMes.setValueAt(16, 4, 1); // Fila 0, Columna 0
-        calendarioMes.setValueAt(17, 4, 2); // Fila 0, Columna 0
-        calendarioMes.setValueAt(18, 4, 3); // Fila 0, Columna 0
-        calendarioMes.setValueAt(19, 4, 4); // Fila 0, Columna 0
-        calendarioMes.setValueAt(20, 4, 5); // Fila 0, Columna 0
-        calendarioMes.setValueAt(21, 4, 6); // Fila 0, Columna 0
-        calendarioMes.setValueAt(22, 6, 0); // Fila 0, Columna 0
-        calendarioMes.setValueAt(23, 6, 1); // Fila 0, Columna 0
-        calendarioMes.setValueAt(24, 6, 2); // Fila 0, Columna 0
-        calendarioMes.setValueAt(25, 6, 3); // Fila 0, Columna 0
-        calendarioMes.setValueAt(26, 6, 4); // Fila 0, Columna 0
-        calendarioMes.setValueAt(27, 6, 5); // Fila 0, Columna 0
-        calendarioMes.setValueAt(28, 6, 6); // Fila 0, Columna 0
-        calendarioMes.setValueAt(29, 8, 0); // Fila 0, Columna 0
-        calendarioMes.setValueAt(30, 8, 1); // Fila 0, Columna 0
+    private void configurarTablaCalendario() {
+        // Crear el modelo de tabla personalizado
+        CustomTableModel modeloCalendario = new CustomTableModel(
+            new Object[] {"Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"}, // Nombres de las columnas
+            12 // Número inicial de filas
+        );
+        calendarioMes.setModel(modeloCalendario);
 
+        // Configurar la fuente y altura de las filas
+        calendarioMes.setFont(new Font("SansSerif", Font.PLAIN, 14));
 
+        int[] heights = {20, 60, 20, 60, 20, 60, 20, 60, 20, 60, 20, 60};
+        for (int i = 0; i < heights.length; i++) {
+            calendarioMes.setRowHeight(i, heights[i]);
+        }
 
+        // Configurar los valores en la tabla
+        int[][] values = {
+            {1, 2, 3, 4, 5, 6, 7},
+            {8, 9, 10, 11, 12, 13, 14},
+            {15, 16, 17, 18, 19, 20, 21},
+            {22, 23, 24, 25, 26, 27, 28},
+            {29, 30}
+        };
 
+        for (int row = 0; row < values.length; row++) {
+            for (int col = 0; col < values[row].length; col++) {
+                calendarioMes.setValueAt(values[row][col], row * 2, col);
+            }
+        }
     }
+
+    
+
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -169,4 +156,16 @@ public class PanelCalendario extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
+}
+
+class CustomTableModel extends DefaultTableModel {
+    public CustomTableModel(Object[] columnNames, int rowCount) {
+        super(columnNames, rowCount);
+    }
+
+    @Override
+    public boolean isCellEditable(int row, int column) {
+        // Hacer las filas impares no editables
+        return ((row % 2) - 1) == 0; // Las filas pares (índices 0, 2, 4, ...) son editables
+    }
 }
